@@ -59,7 +59,7 @@ class PrisonerDilemmaGUI:
         self.scrollable_frame.pack(pady=10)
 
         # Crear el lienzo
-        self.table_canvas = tk.Canvas(self.scrollable_frame, width=800)
+        self.table_canvas = tk.Canvas(self.scrollable_frame, width=1115)
         self.table_canvas.pack(side=tk.LEFT)
 
         # Crear la barra de desplazamiento
@@ -67,7 +67,7 @@ class PrisonerDilemmaGUI:
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         # Crear la tabla personalizada
-        self.table = CustomTable(self.table_canvas, 100, 5, bg="white", width=800,
+        self.table = CustomTable(self.table_canvas, 100, 7, bg="white", width=1115,
                                  height=3030)  # Ajusta el ancho y alto del lienzo  #3030 porque son 101 filas de 30 px
         self.table_canvas.create_window((0, 0), window=self.table, anchor="nw")
 
@@ -129,6 +129,9 @@ class PrisonerDilemmaGUI:
 
         ai.reset()
         opponent.reset()
+        total_ai_coins = 0  # Inicializa el total de monedas IA
+        total_opponent_coins = 0  # Inicializa el total de monedas del oponente
+
         for round_number in range(1, 101):
             play_round(ai, opponent)
 
@@ -150,30 +153,32 @@ class PrisonerDilemmaGUI:
                 ai_coins = 1
                 opponent_coins = 1
 
+            # Sumar las monedas a los totales
+            total_ai_coins += ai_coins
+            total_opponent_coins += opponent_coins
+
             # Actualizar la tabla con los resultados de la ronda
-            self.table.update_cell(round_number, 0, round_number,
-                                   "white")  # Usar round_number aquí en lugar de round_number - 1
+            self.table.update_cell(round_number, 0, round_number, "white")  # Ronda
             self.table.update_cell(round_number, 1, "Cooperar" if decision_ai else "No cooperar",
-                                   "lightgreen" if decision_ai else "lightcoral")
-            self.table.update_cell(round_number, 2, ai_coins, "lightyellow" if ai_coins > 0 else "lightgray")
-            self.table.update_cell(round_number, 3, "Cooperar" if decision_opponent else "No cooperar",
-                                   "lightgreen" if decision_opponent else "lightcoral")
-            self.table.update_cell(round_number, 4, opponent_coins,
-                                   "lightyellow" if opponent_coins > 0 else "lightgray")
+                                   "lightgreen" if decision_ai else "lightcoral")  # Decisión IA
+            self.table.update_cell(round_number, 2, ai_coins,
+                                   "lightyellow" if ai_coins > 0 else "lightgray")  # Monedas IA
+            self.table.update_cell(round_number, 3, total_ai_coins, "lightyellow")  # Total Monedas IA
+            self.table.update_cell(round_number, 4, "Cooperar" if decision_opponent else "No cooperar",
+                                   "lightgreen" if decision_opponent else "lightcoral")  # Decisión Oponente
+            self.table.update_cell(round_number, 5, opponent_coins,
+                                   "lightyellow" if opponent_coins > 0 else "lightgray")  # Monedas Oponente
+            self.table.update_cell(round_number, 6, total_opponent_coins, "lightyellow")  # Total Monedas Oponente
 
         result = f"IA ganó con {ai.coins} monedas. Oponente: {opponent.coins} monedas."
         self.result_label.config(text=result)
 
-
-
-
     def create_column_headers(self):
         """Crea los encabezados de las columnas en la tabla."""
-        headers = ["Ronda", "Decisión IA", "Monedas IA", "Decisión Oponente", "Monedas Oponente"]
+        headers = ["Ronda", "Decisión IA", "Monedas esta ronda IA", "Total Monedas IA", "Decisión Oponente", "Monedas esta ronda Oponente",
+                   "Total Monedas Oponente"]
         for index, header in enumerate(headers):
             self.table.update_cell(0, index, header, "lightblue")  # Dibuja en la primera fila
-
-
 
 
 if __name__ == "__main__":
