@@ -4,7 +4,7 @@ from gui import PrisonerDilemmaGUI
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.geometry("400x400")  # Tamaño de la ventana
+    root.geometry("1080x720")  # Tamaño de la ventana
     root.title("Dilema del Prisionero - Simulador IA")
 
     # Inicializar la GUI
