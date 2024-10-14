@@ -9,7 +9,7 @@ class CustomTable(tk.Canvas):
         super().__init__(master, *args, **kwargs)
         self.rows = rows
         self.columns = columns
-        self.cell_width = 200
+        self.cell_width = 160
         self.cell_height = 30
         self.data = [[0 for _ in range(columns)] for _ in range(rows)]
         self.create_table()

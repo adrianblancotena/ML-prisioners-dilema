@@ -59,7 +59,7 @@ class PrisonerDilemmaGUI:
         self.scrollable_frame.pack(pady=10)
 
         # Crear el lienzo
-        self.table_canvas = tk.Canvas(self.scrollable_frame, width=600, height=300)
+        self.table_canvas = tk.Canvas(self.scrollable_frame, width=800)
         self.table_canvas.pack(side=tk.LEFT)
 
         # Crear la barra de desplazamiento
@@ -67,7 +67,8 @@ class PrisonerDilemmaGUI:
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         # Crear la tabla personalizada
-        self.table = CustomTable(self.table_canvas, 200, 5, bg="white", width=1080, height=720) # Ajusta el ancho y alto del lienzo
+        self.table = CustomTable(self.table_canvas, 200, 5, bg="white", width=800,
+                                 height=720)  # Ajusta el ancho y alto del lienzo
         self.table_canvas.create_window((0, 0), window=self.table, anchor="nw")
 
         # Configurar el lienzo para que se desplace con la barra
