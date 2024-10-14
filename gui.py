@@ -5,6 +5,7 @@ from game import train_ai_for_opponent, play_round
 from player import AlwaysCooperate, AlwaysDefect, RandomPlayer, TitForTat
 from genetic_ai import GeneticAI
 
+
 class PrisonerDilemmaGUI:
     def __init__(self, root):
         self.root = root
@@ -15,10 +16,11 @@ class PrisonerDilemmaGUI:
         self.title_label.pack(pady=10)
 
         # Texto explicativo
-        self.explanation_label = tk.Label(root, text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no. "
-                                                      "Al entrenar a la IA, se optimiza su estrategia contra diferentes oponentes. "
-                                                      "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
-                                            wraplength=600, justify="left", font=("Arial", 12))
+        self.explanation_label = tk.Label(root,
+                                          text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no. "
+                                               "Al entrenar a la IA, se optimiza su estrategia contra diferentes oponentes. "
+                                               "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
+                                          wraplength=600, justify="left", font=("Arial", 12))
         self.explanation_label.pack(pady=10)
 
         self.label = tk.Label(root, text="Selecciona una opción", font=("Arial", 14))
@@ -28,20 +30,24 @@ class PrisonerDilemmaGUI:
         self.button_frame = tk.Frame(root)
         self.button_frame.pack(pady=10)
 
-        self.train_button = tk.Button(self.button_frame, text="Entrenar IA", font=("Arial", 14), command=self.train_ai_phase)
-        self.train_button.pack(side="left", padx=5)  # Añadido un margen a la derecha
+        self.train_button = tk.Button(self.button_frame, text="Entrenar IA", font=("Arial", 14),
+                                      command=self.train_ai_phase)
+        self.train_button.pack(side="left", padx=5)
 
-        self.clear_memory_button = tk.Button(self.button_frame, text="Borrar Memoria de la IA", font=("Arial", 14), command=self.clear_ai_memory)
-        self.clear_memory_button.pack(side="left", padx=5)  # Añadido un margen a la izquierda
+        self.clear_memory_button = tk.Button(self.button_frame, text="Borrar Memoria de la IA", font=("Arial", 14),
+                                             command=self.clear_ai_memory)
+        self.clear_memory_button.pack(side="left", padx=5)
 
         self.opponent_label = tk.Label(root, text="Selecciona el oponente", font=("Arial", 14))
         self.opponent_label.pack(pady=10)
 
         self.opponent_var = tk.StringVar(value="AlwaysCooperate")
-        self.opponent_menu = tk.OptionMenu(root, self.opponent_var, "AlwaysCooperate", "AlwaysDefect", "RandomPlayer", "TitForTat")
+        self.opponent_menu = tk.OptionMenu(root, self.opponent_var, "AlwaysCooperate", "AlwaysDefect", "RandomPlayer",
+                                           "TitForTat")
         self.opponent_menu.pack(pady=10)
 
-        self.test_button = tk.Button(root, text="Probar IA contra oponente", font=("Arial", 14), command=self.test_ai_phase)
+        self.test_button = tk.Button(root, text="Probar IA contra oponente", font=("Arial", 14),
+                                     command=self.test_ai_phase)
         self.test_button.pack(pady=10)
 
         self.result_label = tk.Label(root, text="", font=("Arial", 12))
@@ -56,12 +62,16 @@ class PrisonerDilemmaGUI:
         self.scrollbar.pack(side="right", fill="y")
 
         # Tabla para mostrar las acciones de cada ronda
-        self.tree = ttk.Treeview(self.frame, columns=("Ronda", "Acción IA", "Monedas IA", "Acción Oponente", "Monedas Oponente"), show="headings", height=15, yscrollcommand=self.scrollbar.set)
+        self.tree = ttk.Treeview(self.frame, columns=(
+        "Ronda", "Acción IA", "Monedas Ganadas IA", "Monedas Totales IA", "Acción Oponente", "Monedas Ganadas Oponente",
+        "Monedas Totales Oponente"), show="headings", height=15, yscrollcommand=self.scrollbar.set)
         self.tree.heading("Ronda", text="Ronda")
         self.tree.heading("Acción IA", text="Acción IA")
-        self.tree.heading("Monedas IA", text="Monedas IA")
+        self.tree.heading("Monedas Ganadas IA", text="Monedas Ganadas IA")
+        self.tree.heading("Monedas Totales IA", text="Monedas Totales IA")
         self.tree.heading("Acción Oponente", text="Acción Oponente")
-        self.tree.heading("Monedas Oponente", text="Monedas Oponente")
+        self.tree.heading("Monedas Ganadas Oponente", text="Monedas Ganadas Oponente")
+        self.tree.heading("Monedas Totales Oponente", text="Monedas Totales Oponente")
         self.tree.pack(side="left")
 
         # Configurar el scrollbar para que funcione con la tabla
@@ -95,31 +105,23 @@ class PrisonerDilemmaGUI:
         ai_action_color = "lightgreen" if ai_decision else "lightcoral"
         opponent_action_color = "lightgreen" if opponent_decision else "lightcoral"
 
-        # Colores para monedas
-        ai_coins_color = "lightyellow" if ai_coins > 0 else "lightgray"
-        opponent_coins_color = "lightyellow" if opponent_coins > 0 else "lightgray"
-
         # Aplicar colores a las celdas de acción
         self.tree.item(item_id, values=(
             self.tree.item(item_id)['values'][0],  # Ronda
             "Cooperar" if ai_decision else "No cooperar",  # Acción IA
-            ai_coins,  # Monedas IA
+            self.tree.item(item_id)['values'][2],  # Inicializa monedas ganadas IA
+            ai_coins,  # Monedas Totales IA
             "Cooperar" if opponent_decision else "No cooperar",  # Acción Oponente
-            opponent_coins  # Monedas Oponente
+            self.tree.item(item_id)['values'][5],  # Inicializa monedas ganadas Oponente
+            opponent_coins  # Monedas Totales Oponente
         ))
 
         # Configuración de tags para aplicar colores
         self.tree.tag_configure(f"ai_action_{item_id}", background=ai_action_color)
         self.tree.tag_configure(f"opponent_action_{item_id}", background=opponent_action_color)
-        self.tree.tag_configure(f"ai_coins_{item_id}", background=ai_coins_color)
-        self.tree.tag_configure(f"opponent_coins_{item_id}", background=opponent_coins_color)
 
         # Asignar tags a las celdas correspondientes
-        self.tree.item(item_id, tags=(
-        f"ai_action_{item_id}", f"opponent_action_{item_id}", f"ai_coins_{item_id}", f"opponent_coins_{item_id}"))
-
-        # Configurar el color específico para cada celda después de insertar
-        self.tree.item(item_id, tags=("row",))
+        self.tree.item(item_id, tags=(f"ai_action_{item_id}", f"opponent_action_{item_id}"))
 
     def test_ai_phase(self):
         selected_opponent = self.opponent_var.get()
@@ -144,6 +146,11 @@ class PrisonerDilemmaGUI:
 
         ai.reset()
         opponent.reset()
+
+        # Inicializar contadores de monedas ganadas
+        total_coins_ai = 0
+        total_coins_opponent = 0
+
         for round_number in range(1, 101):
             play_round(ai, opponent)
 
@@ -151,19 +158,41 @@ class PrisonerDilemmaGUI:
             decision_ai = ai.decision()  # Esta llamada debería ser después de `play_round`
             decision_opponent = opponent.decision()  # Esto está bien
 
-            # Definir el texto basado en las decisiones
-            decision_text_ai = "Cooperar" if decision_ai else "No cooperar"
-            decision_text_opponent = "Cooperar" if decision_opponent else "No cooperar"
+            # Calcular monedas ganadas en esta ronda
+            if decision_ai and decision_opponent:
+                coins_ai = 3  # Ambos cooperan
+                coins_opponent = 3  # Ambos cooperan
+            elif decision_ai and not decision_opponent:
+                coins_ai = 0  # IA coopera, oponente no
+                coins_opponent = 5  # Oponente gana
+            elif not decision_ai and decision_opponent:
+                coins_ai = 5  # IA no coopera, oponente sí
+                coins_opponent = 0  # IA gana
+            else:
+                coins_ai = 1  # Ambos no cooperan
+                coins_opponent = 1  # Ambos no cooperan
 
+            # Actualizar monedas totales
+            total_coins_ai += coins_ai
+            total_coins_opponent += coins_opponent
+
+            # Insertar la fila en el Treeview
             item_id = self.tree.insert("", "end",
-                                       values=(round_number, decision_ai, ai.coins, decision_opponent, opponent.coins))
-            self.color_row(item_id, ai.decision(), ai.coins, opponent.decision(), opponent.coins)
+                                       values=(round_number, "Cooperar" if decision_ai else "No cooperar", coins_ai,
+                                               total_coins_ai,
+                                               "Cooperar" if decision_opponent else "No cooperar", coins_opponent,
+                                               total_coins_opponent))
 
-        result = f"IA ganó con {ai.coins} monedas. Oponente: {opponent.coins} monedas."
+            # Color de la fila según las acciones
+            self.color_row(item_id, decision_ai, total_coins_ai, decision_opponent, total_coins_opponent)
+
+        # Resultado final
+        result = f"Monedas totales IA: {total_coins_ai}, Monedas totales Oponente: {total_coins_opponent}"
         self.result_label.config(text=result)
 
 
+# Ejecución de la aplicación
 if __name__ == "__main__":
     root = tk.Tk()
-    app = PrisonerDilemmaGUI(root)
+    gui = PrisonerDilemmaGUI(root)
     root.mainloop()
