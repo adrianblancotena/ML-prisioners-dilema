@@ -35,3 +35,9 @@ class CustomTable(tk.Canvas):
         headers = ["Ronda", "Decisión IA", "Monedas IA", "Decisión Oponente", "Monedas Oponente"]
         for index, header in enumerate(headers):
             self.draw_cell(0, index, header, "lightblue")  # Dibuja en la primera fila
+    def update_canvas_size(self):
+        """Ajusta el tamaño del lienzo según el contenido de la tabla."""
+        # Asegurarse de que la tabla tenga el tamaño correcto
+        total_width = sum(cell.winfo_width() for cell in self.cells.values()) // self.columns
+        total_height = sum(cell.winfo_height() for cell in self.cells.values()) // self.rows
+        self.config(width=total_width, height=total_height)
