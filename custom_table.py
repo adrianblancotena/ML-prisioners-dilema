@@ -32,7 +32,7 @@ class CustomTable(tk.Canvas):
         self.draw_cell(row, column, value, color)
 
     def create_column_headers(self):
-        headers = ["Ronda", "Decisión IA", "Monedas IA", "Decisión Oponente", "Monedas Oponente"]
+        headers = ["Ronda", "Decisión IA", "Monedas IA","Monedas esta ronda" ,"Decisión Oponente", "Monedas esta ronda","Monedas Oponente"]
         for index, header in enumerate(headers):
             self.draw_cell(0, index, header, "lightblue")  # Dibuja en la primera fila
     def update_canvas_size(self):

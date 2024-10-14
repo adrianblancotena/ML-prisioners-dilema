@@ -57,30 +57,25 @@ class PrisonerDilemmaGUI:
         self.scrollable_frame = tk.Frame(root)
         self.scrollable_frame.pack(pady=10)
 
-        # Crear el lienzo para el contenido de la tabla
-        self.table_canvas = tk.Canvas(self.scrollable_frame, width=1115, height=400)
+        # Crear la tabla
+        self.table_canvas = tk.Canvas(self.scrollable_frame, width=1115, height=400)  # Cambiar el tamaño del lienzo
         self.table_canvas.pack(side=tk.LEFT)
 
         # Crear la barra de desplazamiento
         self.scrollbar = tk.Scrollbar(self.scrollable_frame, orient="vertical", command=self.table_canvas.yview)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # Crear la tabla personalizada con tamaño dinámico
-        self.table = CustomTable(self.table_canvas, 100, 7, bg="white", width=1115, height=3030)
+        # Crear la tabla personalizada
+        self.table = CustomTable(self.table_canvas, 101, 7, bg="white", width=1115, height=3030)
         self.table_canvas.create_window((0, 0), window=self.table, anchor="nw")
 
         # Configurar el lienzo para que se desplace con la barra
         self.table_canvas.configure(yscrollcommand=self.scrollbar.set)
 
-        # Crear marco para cabeceras
-        self.header_frame = tk.Frame(root)
-        self.header_frame.pack(pady=(0, 10))
-
-        # Nombres de las columnas (cabeceras)
-        self.create_column_headers()
-
         # Llamar a la función de actualización para el tamaño del lienzo
         self.update_canvas_size()
+
+
 
     def update_canvas_size(self):
         """Actualiza el tamaño del lienzo según el tamaño total de la tabla."""
@@ -131,8 +126,7 @@ class PrisonerDilemmaGUI:
         # Limpiar la tabla antes de empezar
         self.table.delete("all")  # Esto eliminará todas las celdas, incluidas las cabeceras
 
-        # Vuelve a dibujar las cabeceras después de limpiar
-        self.create_column_headers()  # Esto es necesario para que las cabeceras se mantengan
+        # No crear las cabeceras nuevamente aquí
 
         ai.reset()
         opponent.reset()
@@ -156,34 +150,29 @@ class PrisonerDilemmaGUI:
             elif not decision_ai and decision_opponent:
                 ai_coins = 5
                 opponent_coins = 0
-            else:  # Ambos no cooperan
+            else:  # ambos no cooperan
                 ai_coins = 1
                 opponent_coins = 1
 
-            # Actualiza los totales
+            # Sumar las monedas a los totales
             total_ai_coins += ai_coins
             total_opponent_coins += opponent_coins
 
-            # Actualiza la tabla con los resultados de la ronda
-            self.table.update_cell(round_number, 0, round_number, "white")
-            self.table.update_cell(round_number, 1, decision_ai, "lightgreen" if decision_ai else "lightcoral")
-            self.table.update_cell(round_number, 2, ai_coins, "white")
-            self.table.update_cell(round_number, 3, total_ai_coins, "white")
-            self.table.update_cell(round_number, 4, decision_opponent, "lightgreen" if decision_opponent else "lightcoral")
-            self.table.update_cell(round_number, 5, opponent_coins, "white")
-            self.table.update_cell(round_number, 6, total_opponent_coins, "white")
+            # Actualizar la tabla con los resultados de la ronda
+            self.table.update_cell(round_number, 0, round_number, "white")  # Ronda
+            self.table.update_cell(round_number, 1, "Cooperar" if decision_ai else "No cooperar",
+                                   "lightgreen" if decision_ai else "lightcoral")  # Decisión IA
+            self.table.update_cell(round_number, 2, ai_coins,
+                                   "lightyellow" if ai_coins > 0 else "lightgray")  # Monedas IA
+            self.table.update_cell(round_number, 3, total_ai_coins, "lightyellow")  # Total Monedas IA
+            self.table.update_cell(round_number, 4, "Cooperar" if decision_opponent else "No cooperar",
+                                   "lightgreen" if decision_opponent else "lightcoral")  # Decisión Oponente
+            self.table.update_cell(round_number, 5, opponent_coins,
+                                   "lightyellow" if opponent_coins > 0 else "lightgray")  # Monedas Oponente
+            self.table.update_cell(round_number, 6, total_opponent_coins, "lightyellow")  # Total Oponente
 
-            self.update_canvas_size()  # Asegúrate de actualizar el tamaño del lienzo después de cada ronda
-
-        # Mostrar el resultado final
+        # Actualizar el resultado total en la parte inferior
         self.result_label.config(text=f"Resultados: IA total de monedas: {total_ai_coins}, Oponente total de monedas: {total_opponent_coins}")
-
-    def create_column_headers(self):
-        """Crea y muestra las cabeceras de la tabla."""
-        headers = ["Ronda", "Decisión IA", "Monedas IA", "Total IA", "Decisión Oponente", "Monedas Oponente", "Total Oponente"]
-        for col, header in enumerate(headers):
-            label = tk.Label(self.header_frame, text=header, bg="lightblue", font=("Arial", 12, "bold"), relief=tk.RAISED, padx=5, pady=5)
-            label.grid(row=0, column=col)
 
 if __name__ == "__main__":
     root = tk.Tk()
