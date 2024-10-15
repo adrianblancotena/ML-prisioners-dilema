@@ -138,23 +138,22 @@ class PrisonerDilemmaGUI:
         results = []
 
         for round_number in range(1, 101):
-            play_round(ai, opponent)
-
-            decision_ai = ai.decision()
-            decision_opponent = opponent.decision()
+            # Hacer que ambos jugadores tomen decisiones
+            ai_decision = ai.decision()  # Toma la decisión de la IA
+            opponent_decision = opponent.decision()  # Toma la decisión del oponente
 
             # Actualiza la decisión del oponente (TitForTat) con la decisión de la IA
             if isinstance(opponent, TitForTat):
-                opponent.update_decision(decision_ai)
+                opponent.update_decision(ai_decision)
 
             # Calcular las monedas ganadas en esta ronda
-            if decision_ai and decision_opponent:
+            if ai_decision and opponent_decision:
                 ai_coins = 3
                 opponent_coins = 3
-            elif decision_ai and not decision_opponent:
+            elif ai_decision and not opponent_decision:
                 ai_coins = 0
                 opponent_coins = 5
-            elif not decision_ai and decision_opponent:
+            elif not ai_decision and opponent_decision:
                 ai_coins = 5
                 opponent_coins = 0
             else:  # ambos no cooperan
@@ -166,7 +165,7 @@ class PrisonerDilemmaGUI:
             total_opponent_coins += opponent_coins
 
             # Almacenar los resultados en la lista
-            results.append((round_number, decision_ai, ai_coins, total_ai_coins, decision_opponent, opponent_coins,
+            results.append((round_number, ai_decision, ai_coins, total_ai_coins, opponent_decision, opponent_coins,
                             total_opponent_coins))
 
             # Puedes actualizar la tabla cada 10 rondas, por ejemplo
@@ -184,10 +183,16 @@ class PrisonerDilemmaGUI:
                     self.table.update_cell(r[0], 6, r[6], "lightyellow")  # Total Oponente
                 results.clear()  # Limpiar la lista de resultados
 
+        # Actualiza la decisión final de TitForTat después de la última ronda
+        if isinstance(opponent, TitForTat):
+            opponent.update_decision(ai_decision)  # Actualiza la decisión con la última decisión de IA
 
         # Actualizar el resultado total en la parte inferior
         self.result_label.config(
             text=f"Resultados: IA total de monedas: {total_ai_coins}, Oponente total de monedas: {total_opponent_coins}")
+
+
+
 
 
 

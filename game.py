@@ -20,9 +20,10 @@ def play_round(player1, player2):
         player2.coins += 1
 
     if isinstance(player1, TitForTat):
-        player1.update(decision2)
+        player1.update_decision(decision2)
     if isinstance(player2, TitForTat):
-        player2.update(decision1)
+        player2.update_decision(decision1)
+
 
 def train_ai_for_opponent(opponent, generations=100, population_size=10, mutation_rate=0.1, name="Genetic AI"):
     population = [GeneticAI(name=name) for _ in range(population_size)]
