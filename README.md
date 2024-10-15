@@ -1,8 +1,9 @@
 # 🧠 Dilema del Prisionero - IA Evolutiva
 
-## Download the latest release
+## Descargar la última versión
 
-You can download the latest version of the project from [here](https://github.com/adrianblancotena/ML-prisioners-dilema/releases/tag/Download).
+Puedes descargar la última versión del proyecto desde [aquí](https://github.com/adrianblancotena/ML-prisioners-dilema/releases/tag/Download).
+
 
 ## 📜 Resumen
 
