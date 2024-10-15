@@ -17,7 +17,8 @@ class PrisonerDilemmaGUI:
         # Ajustar el tamaño de la ventana
         self.root.geometry("1920x1080")  # Ancho x Alto
 
-        self.root.configure(bg="#2E2E2E")  # Color gris oscuro PARA LA NOCHE
+        #self.root.configure(bg="#2E2E2E")  # Color gris oscuro PARA LA NOCHE
+
         # Título
         self.title_label = tk.Label(root, text="Dilema del Prisionero", font=("Arial", 20, "bold"))
         self.title_label.pack(pady=10)
