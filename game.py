@@ -15,7 +15,7 @@ def play_round(player1, player2):
     elif decision1 and not decision2:
         player1.coins += 0
         player2.coins += 5
-    else:
+    else:  # ambos no cooperan
         player1.coins += 1
         player2.coins += 1
 

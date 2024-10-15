@@ -1,1 +1,3 @@
-{"Against_Cooperate": [false, false, false, false, false, false, false, false, false, false], "Against_Defect": [false, false, false, false, false, false, false, false, false, false], "Against_Random": [false, false, false, true, false, true, false, false, false, false]}
+
+
+{"Against_Cooperate": [false, false, false, false, false, false, false, false, false, false], "Against_Defect": [false, false, false, false, false, false, false, false, false, false], "Against_Random": [false, true, false, false, false, true, false, false, false, false]}

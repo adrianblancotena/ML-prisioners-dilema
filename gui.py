@@ -13,9 +13,11 @@ class PrisonerDilemmaGUI:
         self.root = root
         self.root.title("Dilema del Prisionero - IA Entrenada")
 
+
         # Ajustar el tamaño de la ventana
         self.root.geometry("1920x1080")  # Ancho x Alto
 
+        self.root.configure(bg="#2E2E2E")  # Color gris oscuro PARA LA NOCHE
         # Título
         self.title_label = tk.Label(root, text="Dilema del Prisionero", font=("Arial", 20, "bold"))
         self.title_label.pack(pady=10)
@@ -182,17 +184,6 @@ class PrisonerDilemmaGUI:
                     self.table.update_cell(r[0], 6, r[6], "lightyellow")  # Total Oponente
                 results.clear()  # Limpiar la lista de resultados
 
-        # Asegúrate de actualizar cualquier ronda que no se haya actualizado
-        for r in results:
-            self.table.update_cell(r[0], 0, r[0], "white")  # Ronda
-            self.table.update_cell(r[0], 1, "Cooperar" if r[1] else "No cooperar",
-                                   "lightgreen" if r[1] else "lightcoral")  # Decisión IA
-            self.table.update_cell(r[0], 2, r[2], "lightyellow" if r[2] > 0 else "lightgray")  # Monedas IA
-            self.table.update_cell(r[0], 3, r[3], "lightyellow")  # Total Monedas IA
-            self.table.update_cell(r[0], 4, "Cooperar" if r[4] else "No cooperar",
-                                   "lightgreen" if r[4] else "lightcoral")  # Decisión Oponente
-            self.table.update_cell(r[0], 5, r[5], "lightyellow" if r[5] > 0 else "lightgray")  # Monedas Oponente
-            self.table.update_cell(r[0], 6, r[6], "lightyellow")  # Total Oponente
 
         # Actualizar el resultado total en la parte inferior
         self.result_label.config(
