@@ -41,7 +41,7 @@ class PrisonerDilemmaGUI:
                                                "Si ninguno coopera, ambos reciben 1 moneda. Así que el dilema es que cada jugador debe decidir si "
                                                "cooperar o no, sin saber lo que hará el otro.\n\n"
                                                "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
-                                          wraplength=1000,
+                                          wraplength=1200,
                                           justify="left",
                                           font=("Arial", 12))
         self.explanation_label.pack(pady=10)
