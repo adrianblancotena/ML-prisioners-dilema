@@ -23,14 +23,17 @@ class PrisonerDilemmaGUI:
         self.title_label.pack(pady=10)
 
         # Texto explicativo
-        self.explanation_label = tk.Label(root, text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no. "
-                                                      "Al entrenar a la IA, se optimiza su estrategia contra diferentes oponentes. "
-                                                      "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
-                                            wraplength=600, justify="left", font=("Arial", 12))
-        self.explanation_label.pack(pady=10)
+        self.explanation_frame = tk.Frame(root, bg="#2E2E2E")  # Crea un marco para el texto
+        self.explanation_frame.pack(pady=10)
 
-        self.label = tk.Label(root, text="Selecciona una opción", font=("Arial", 14))
-        self.label.pack(pady=20)
+        self.explanation_label = tk.Label(self.explanation_frame,
+                                          text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no. "
+                                               "El objetivo de esta IA es ganar siempre o al menos empatar; en lugar de buscar la mejor estrategia de cabeza, "
+                                               "este programa entrena una IA evolutiva que se encarga de encontrar la mejor estrategia para cada oponente. "
+                                               "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
+                                          wraplength=600, justify="left", font=("Arial", 12), bg="#2E2E2E",
+                                          fg="white")  # Añade bg y fg para que sea visible
+        self.explanation_label.pack(pady=10)
 
         # Frame para contener los botones de Entrenar y Borrar Memoria
         self.button_frame = tk.Frame(root)
