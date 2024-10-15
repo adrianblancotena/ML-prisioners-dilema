@@ -1,4 +1,5 @@
 # gui.py
+import webbrowser  # Asegúrate de importar la biblioteca webbrowser
 
 import tkinter as tk
 from tkinter import ttk
@@ -15,19 +16,26 @@ class PrisonerDilemmaGUI:
 
 
         # Ajustar el tamaño de la ventana
-        self.root.geometry("1920x1080")  # Ancho x Alto
+        self.root.geometry("1800x1000")  # Ancho x Alto
 
         #self.root.configure(bg="#2E2E2E")  # Color gris oscuro PARA LA NOCHE
+
+        # Configurar la ventana en modo pantalla completa
+        self.root.attributes("-fullscreen", True)  # Activa el modo pantalla completa
+
+        # Para permitir salir del modo pantalla completa al presionar Esc
+        self.root.bind("<Escape>", self.exit_fullscreen)
 
         # Título
         self.title_label = tk.Label(root, text="Dilema del Prisionero", font=("Arial", 20, "bold"))
         self.title_label.pack(pady=10)
 
         # Texto explicativo
-        self.explanation_label = tk.Label(root, text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no. "
-                                                      "Al entrenar a la IA, se optimiza su estrategia contra diferentes oponentes. "
-                                                      "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
-                                            wraplength=600, justify="left", font=("Arial", 12))
+        self.explanation_label = tk.Label(root,  text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no.\n\n"
+                                               "El objetivo de esta IA es ganar siempre o al menos empatar; en lugar de buscar la mejor estrategia de cabeza, "
+                                               "este programa entrena una IA evolutiva que se encarga de encontrar la mejor estrategia para cada oponente.\n\n"
+                                               "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
+                                            wraplength=800, justify="left", font=("Arial", 12))
         self.explanation_label.pack(pady=10)
 
         self.label = tk.Label(root, text="Selecciona una opción", font=("Arial", 14))
@@ -46,8 +54,8 @@ class PrisonerDilemmaGUI:
         self.opponent_label = tk.Label(root, text="Selecciona el oponente", font=("Arial", 14))
         self.opponent_label.pack(pady=10)
 
-        self.opponent_var = tk.StringVar(value="AlwaysCooperate")
-        self.opponent_menu = tk.OptionMenu(root, self.opponent_var, "AlwaysCooperate", "AlwaysDefect", "RandomPlayer", "TitForTat")
+        self.opponent_var = tk.StringVar(value="Always Cooperate")
+        self.opponent_menu = tk.OptionMenu(root, self.opponent_var, "Always Cooperate", "Always Defect", "Random Player", "TitForTat")
         self.opponent_menu.pack(pady=10)
 
         self.test_button = tk.Button(root, text="Probar IA contra oponente", font=("Arial", 14), command=self.test_ai_phase)
@@ -78,7 +86,31 @@ class PrisonerDilemmaGUI:
         # Llamar a la función de actualización para el tamaño del lienzo
         self.update_canvas_size()
 
+        # Crear un marco para los enlaces
+        self.link_frame = tk.Frame(root)
+        self.link_frame.pack(side=tk.BOTTOM, anchor="se", pady=10)  # Ajustar a la esquina inferior derecha
 
+        # Enlace a LinkedIn
+        self.linkedin_label = tk.Label(self.link_frame, text="My LinkedIn", fg="blue", cursor="hand2")
+        self.linkedin_label.pack(side=tk.LEFT, padx=10)
+        self.linkedin_label.bind("<Button-1>",
+                                 lambda e: webbrowser.open_new("https://www.linkedin.com/in/adrianblancotena/"))
+
+        # Enlace a GitHub
+        self.github_label = tk.Label(self.link_frame, text="My GitHub", fg="blue", cursor="hand2")
+        self.github_label.pack(side=tk.LEFT, padx=10)
+        self.github_label.bind("<Button-1>", lambda e: webbrowser.open_new("https://github.com/adrianblancotena"))
+
+        # Enlace al video de Veritasium
+        self.veritasium_label = tk.Label(self.link_frame, text="Inspired by Veritasium", fg="blue", cursor="hand2")
+        self.veritasium_label.pack(side=tk.LEFT, padx=10)
+        self.veritasium_label.bind("<Button-1>",
+                                   lambda e: webbrowser.open_new("https://youtu.be/mScpHTIi-kM?si=y4bv_uW_iJIeOKFT"))
+
+
+    def exit_fullscreen(self, event=None):
+        """Sale del modo pantalla completa."""
+        self.root.attributes("-fullscreen", False)
 
     def update_canvas_size(self):
         """Actualiza el tamaño del lienzo según el tamaño total de la tabla."""
@@ -98,7 +130,7 @@ class PrisonerDilemmaGUI:
             self.result_label.config(text=f"Error al borrar el archivo: {e}")
 
     def train_ai_phase(self):
-        self.result_label.config(text="Entrenando IA contra todos los oponentes...")
+        self.result_label.config(text="Entrenando IA contra todos los oponentes... (ESTO PUEDE TARDAR UNOS SEGUNDOS, NO TE PREOCUPES SOLO ESPERA) ")
         self.root.update()
 
         # Entrenamiento de la IA contra todos los oponentes
@@ -113,15 +145,21 @@ class PrisonerDilemmaGUI:
         selected_opponent = self.opponent_var.get()
 
         # Crear el oponente según la selección
-        if selected_opponent == "AlwaysCooperate":
+        if selected_opponent == "Always Cooperate":
             opponent = AlwaysCooperate()
             ai = GeneticAI(name="Against_Cooperate")
-        elif selected_opponent == "AlwaysDefect":
+
+
+        elif selected_opponent == "Always Defect":
             opponent = AlwaysDefect()
             ai = GeneticAI(name="Against_Defect")
-        elif selected_opponent == "RandomPlayer":
+
+
+        elif selected_opponent == "Random Player":
             opponent = RandomPlayer()
             ai = GeneticAI(name="Against_Random")
+
+
         elif selected_opponent == "TitForTat":
             opponent = TitForTat()
             ai = GeneticAI(name="Against_TitForTat")

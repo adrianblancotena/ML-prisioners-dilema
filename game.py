@@ -25,7 +25,7 @@ def play_round(player1, player2):
         player2.update_decision(decision1)
 
 
-def train_ai_for_opponent(opponent, generations=1000, population_size=100, mutation_rate=0.1, name="Genetic AI"):
+def train_ai_for_opponent(opponent, generations=200, population_size=50, mutation_rate=0.1, name="Genetic AI"):
     population = [GeneticAI(name=name) for _ in range(population_size)]
 
     for generation in range(generations):
