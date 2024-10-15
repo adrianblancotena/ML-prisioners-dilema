@@ -1,5 +1,9 @@
 # 🧠 Dilema del Prisionero - IA Evolutiva
 
+## Download the latest release
+
+You can download the latest version of the project from [here](https://github.com/adrianblancotena/ML-prisioners-dilema/releases/tag/Download).
+
 ## 📜 Resumen
 
 Este proyecto simula el famoso "Dilema del Prisionero", un escenario teórico de la teoría de juegos donde dos jugadores deben decidir entre cooperar o no cooperar, sin conocer la elección del otro jugador. El dilema se presenta porque las decisiones individuales que maximizan las recompensas personales pueden llevar a un peor resultado colectivo.
