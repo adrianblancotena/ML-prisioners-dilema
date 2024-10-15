@@ -31,11 +31,19 @@ class PrisonerDilemmaGUI:
         self.title_label.pack(pady=10)
 
         # Texto explicativo
-        self.explanation_label = tk.Label(root,  text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no.\n\n"
+        # Texto explicativo
+        self.explanation_label = tk.Label(root,
+                                          text="Este juego simula el dilema del prisionero, donde dos jugadores pueden elegir cooperar o no.\n\n"
                                                "El objetivo de esta IA es ganar siempre o al menos empatar; en lugar de buscar la mejor estrategia de cabeza, "
                                                "este programa entrena una IA evolutiva que se encarga de encontrar la mejor estrategia para cada oponente.\n\n"
+                                               "Cuando ambos jugadores cooperan, cada uno recibe 3 monedas. Si un jugador coopera y el otro no, "
+                                               "el que cooperó recibe 0 monedas y el que no cooperó recibe 5 monedas. "
+                                               "Si ninguno coopera, ambos reciben 1 moneda. Así que el dilema es que cada jugador debe decidir si "
+                                               "cooperar o no, sin saber lo que hará el otro.\n\n"
                                                "El botón 'Borrar Memoria de la IA' eliminará la memoria almacenada para permitir un nuevo entrenamiento.",
-                                            wraplength=800, justify="left", font=("Arial", 12))
+                                          wraplength=1000,
+                                          justify="left",
+                                          font=("Arial", 12))
         self.explanation_label.pack(pady=10)
 
         self.label = tk.Label(root, text="Selecciona una opción", font=("Arial", 14))
