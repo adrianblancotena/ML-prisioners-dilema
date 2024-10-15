@@ -51,7 +51,7 @@ class PrisonerDilemmaGUI:
 
         # Frame para contener los botones de Entrenar y Borrar Memoria
         self.button_frame = tk.Frame(root)
-        self.button_frame.pack(pady=10)
+        self.button_frame.pack(pady=5)
 
         self.train_button = tk.Button(self.button_frame, text="Entrenar IA", font=("Arial", 14), command=self.train_ai_phase)
         self.train_button.pack(side="left", padx=5)
@@ -60,21 +60,21 @@ class PrisonerDilemmaGUI:
         self.clear_memory_button.pack(side="left", padx=5)
 
         self.opponent_label = tk.Label(root, text="Selecciona el oponente", font=("Arial", 14))
-        self.opponent_label.pack(pady=10)
+        self.opponent_label.pack(pady=5)
 
         self.opponent_var = tk.StringVar(value="Always Cooperate")
         self.opponent_menu = tk.OptionMenu(root, self.opponent_var, "Always Cooperate", "Always Defect", "Random Player", "TitForTat")
-        self.opponent_menu.pack(pady=10)
+        self.opponent_menu.pack(pady=5)
 
         self.test_button = tk.Button(root, text="Probar IA contra oponente", font=("Arial", 14), command=self.test_ai_phase)
-        self.test_button.pack(pady=10)
+        self.test_button.pack(pady=5)
 
         self.result_label = tk.Label(root, text="", font=("Arial", 12))
-        self.result_label.pack(pady=10)
+        self.result_label.pack(pady=5)
 
         # Crear el marco para el lienzo y la barra de desplazamiento
         self.scrollable_frame = tk.Frame(root)
-        self.scrollable_frame.pack(pady=10)
+        self.scrollable_frame.pack(pady=5)
 
         # Crear la tabla
         self.table_canvas = tk.Canvas(self.scrollable_frame, width=1115, height=400)  # Cambiar el tamaño del lienzo
