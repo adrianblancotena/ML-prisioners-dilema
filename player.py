@@ -34,10 +34,14 @@ class RandomPlayer(Player):
 class TitForTat(Player):
     def __init__(self):
         super().__init__()
-        self.last_opponent_move = True  # Empieza cooperando
+        self.last_opponent_decision = True  # Asume que cooperó en la primera ronda
 
     def decision(self):
-        return self.last_opponent_move  # Coopera si el oponente cooperó en la última ronda
+        # Retorna la última decisión del oponente
+        return self.last_opponent_decision
 
-    def update(self, opponent_move):
-        self.last_opponent_move = opponent_move
+    def update(self, opponent_decision):
+        # Actualiza la última decisión del oponente
+        self.last_opponent_decision = opponent_decision
+
+

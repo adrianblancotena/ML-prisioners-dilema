@@ -125,20 +125,25 @@ class PrisonerDilemmaGUI:
 
         # Limpiar la tabla antes de empezar
         self.table.delete("all")  # Esto eliminará todas las celdas, incluidas las cabeceras
-
-        # No crear las cabeceras nuevamente aquí
+        self.table.create_column_headers()  # Añade de nuevo las cabeceras
 
         ai.reset()
         opponent.reset()
         total_ai_coins = 0  # Inicializa el total de monedas IA
         total_opponent_coins = 0  # Inicializa el total de monedas del oponente
 
+        # Almacena los resultados en una lista temporal
+        results = []
+
         for round_number in range(1, 101):
             play_round(ai, opponent)
 
-            # Obtener las decisiones de la IA y del oponente
             decision_ai = ai.decision()
             decision_opponent = opponent.decision()
+
+            # Actualiza la decisión del oponente (TitForTat) con la decisión de la IA
+            if isinstance(opponent, TitForTat):
+                opponent.update_decision(decision_ai)
 
             # Calcular las monedas ganadas en esta ronda
             if decision_ai and decision_opponent:
@@ -158,23 +163,40 @@ class PrisonerDilemmaGUI:
             total_ai_coins += ai_coins
             total_opponent_coins += opponent_coins
 
-            # Actualizar la tabla con los resultados de la ronda
-            self.table.update_cell(round_number, 0, round_number, "white")  # Ronda
-            self.table.update_cell(round_number, 1, "Cooperar" if decision_ai else "No cooperar",
-                                   "lightgreen" if decision_ai else "lightcoral")  # Decisión IA
-            self.table.update_cell(round_number, 2, ai_coins,
-                                   "lightyellow" if ai_coins > 0 else "lightgray")  # Monedas IA
-            self.table.update_cell(round_number, 3, total_ai_coins, "lightyellow")  # Total Monedas IA
-            self.table.update_cell(round_number, 4, "Cooperar" if decision_opponent else "No cooperar",
-                                   "lightgreen" if decision_opponent else "lightcoral")  # Decisión Oponente
-            self.table.update_cell(round_number, 5, opponent_coins,
-                                   "lightyellow" if opponent_coins > 0 else "lightgray")  # Monedas Oponente
-            self.table.update_cell(round_number, 6, total_opponent_coins, "lightyellow")  # Total Oponente
+            # Almacenar los resultados en la lista
+            results.append((round_number, decision_ai, ai_coins, total_ai_coins, decision_opponent, opponent_coins,
+                            total_opponent_coins))
+
+            # Puedes actualizar la tabla cada 10 rondas, por ejemplo
+            if round_number % 10 == 0:
+                for r in results:
+                    self.table.update_cell(r[0], 0, r[0], "white")  # Ronda
+                    self.table.update_cell(r[0], 1, "Cooperar" if r[1] else "No cooperar",
+                                           "lightgreen" if r[1] else "lightcoral")  # Decisión IA
+                    self.table.update_cell(r[0], 2, r[2], "lightyellow" if r[2] > 0 else "lightgray")  # Monedas IA
+                    self.table.update_cell(r[0], 3, r[3], "lightyellow")  # Total Monedas IA
+                    self.table.update_cell(r[0], 4, "Cooperar" if r[4] else "No cooperar",
+                                           "lightgreen" if r[4] else "lightcoral")  # Decisión Oponente
+                    self.table.update_cell(r[0], 5, r[5],
+                                           "lightyellow" if r[5] > 0 else "lightgray")  # Monedas Oponente
+                    self.table.update_cell(r[0], 6, r[6], "lightyellow")  # Total Oponente
+                results.clear()  # Limpiar la lista de resultados
+
+        # Asegúrate de actualizar cualquier ronda que no se haya actualizado
+        for r in results:
+            self.table.update_cell(r[0], 0, r[0], "white")  # Ronda
+            self.table.update_cell(r[0], 1, "Cooperar" if r[1] else "No cooperar",
+                                   "lightgreen" if r[1] else "lightcoral")  # Decisión IA
+            self.table.update_cell(r[0], 2, r[2], "lightyellow" if r[2] > 0 else "lightgray")  # Monedas IA
+            self.table.update_cell(r[0], 3, r[3], "lightyellow")  # Total Monedas IA
+            self.table.update_cell(r[0], 4, "Cooperar" if r[4] else "No cooperar",
+                                   "lightgreen" if r[4] else "lightcoral")  # Decisión Oponente
+            self.table.update_cell(r[0], 5, r[5], "lightyellow" if r[5] > 0 else "lightgray")  # Monedas Oponente
+            self.table.update_cell(r[0], 6, r[6], "lightyellow")  # Total Oponente
 
         # Actualizar el resultado total en la parte inferior
-        self.result_label.config(text=f"Resultados: IA total de monedas: {total_ai_coins}, Oponente total de monedas: {total_opponent_coins}")
+        self.result_label.config(
+            text=f"Resultados: IA total de monedas: {total_ai_coins}, Oponente total de monedas: {total_opponent_coins}")
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = PrisonerDilemmaGUI(root)
-    root.mainloop()
+
+
